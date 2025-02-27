@@ -16,7 +16,7 @@ public class TracingManager : MonoBehaviour
     int pointIndex = 0;
     TracingState state = TracingState.Idle;
     float maxDragDistance = 1f;
-    float touchPointDistance = 0.2f;
+    float touchPointDistance = 0.05f;
     float minLineRendererPointSpacing = 0.3f;
 
     public Vector2 GetNextPos(Vector2 currentPos, Vector2 mousePos)
@@ -26,7 +26,7 @@ public class TracingManager : MonoBehaviour
             return currentPos;
         }
 
-        if (Vector2.Distance(currentPos, GetNextPoint()) < touchPointDistance)
+        if (isNearTarget(currentPos) || hasOvershotTarget(currentPos))
         {
             pointIndex++;
             if (pointIndex == points.childCount - 1)
@@ -49,6 +49,19 @@ public class TracingManager : MonoBehaviour
         Vector2 pos = Vector2.MoveTowards(currentPos, nearestPosOnLine, speed * Time.deltaTime);
         UpdateLineRenderer(pos); // TODO: emit event here
         return pos;
+    }
+
+    bool isNearTarget(Vector2 currentPos)
+    {
+        return Vector2.Distance(currentPos, GetNextPoint()) < touchPointDistance;
+    }
+
+    bool hasOvershotTarget(Vector2 currentPos)
+    {
+        var currentPoint = points.GetChild(pointIndex).position;
+        var distanceToNextPoint = Vector2.Distance(currentPoint, GetNextPoint());
+        var currentDistance = Vector2.Distance(currentPoint, currentPos);
+        return currentDistance > distanceToNextPoint;
     }
 
     // TODO: move this to another class
