@@ -645,7 +645,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000008727ca7a
+  m_ApplyToSortingLayers: 000000008727ca7afd16d6ff
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -945,8 +945,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2746627
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.26981127, g: 1, b: 0.9513208, a: 1}
@@ -1460,8 +1460,36 @@ PrefabInstance:
       value: line
       objectReference: {fileID: 0}
     - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
       propertyPath: m_Positions.Array.data[0].y
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
+      propertyPath: m_Parameters.colorGradient.ctime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
+      propertyPath: m_Parameters.colorGradient.m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9085151979518286419, guid: a0b863d6b88a87b40858e8abf546adaf, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time

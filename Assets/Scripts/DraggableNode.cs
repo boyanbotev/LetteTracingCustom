@@ -32,10 +32,9 @@ public class DraggableNode : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0;
 
             var nextPos = tracingManager.GetNextPos(transform.position, mousePosition);
-            transform.position = nextPos;
+            transform.position = new Vector3(nextPos.x, nextPos.y, transform.position.z);
         }
     }
 }

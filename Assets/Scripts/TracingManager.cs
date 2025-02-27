@@ -43,8 +43,8 @@ public class TracingManager : MonoBehaviour
         var nearestPosOnLine = NearestPointOnLine(currentPoint, dirToNextPoint, mousePos);
 
         var clampedPos = new Vector2(
-           Mathf.Clamp(nearestPosOnLine.x, Mathf.Min(currentPoint.x, nextPoint.x), Mathf.Max(currentPoint.x, nextPoint.x)),
-           Mathf.Clamp(nearestPosOnLine.y, Mathf.Min(currentPoint.y, nextPoint.y), Mathf.Max(currentPoint.y, nextPoint.y))
+           Mathf.Clamp(nearestPosOnLine.x, Mathf.Min(currentPos.x, nextPoint.x), Mathf.Max(currentPos.x, nextPoint.x)),
+           Mathf.Clamp(nearestPosOnLine.y, Mathf.Min(currentPos.y, nextPoint.y), Mathf.Max(currentPos.y, nextPoint.y))
         );
 
         return Vector2.MoveTowards(currentPos, clampedPos, speed * Time.deltaTime);
