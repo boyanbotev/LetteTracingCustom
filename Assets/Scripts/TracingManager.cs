@@ -15,20 +15,15 @@ public class TracingManager : MonoBehaviour
     [SerializeField] DraggableNode node;
     int pointIndex = 0;
     TracingState state = TracingState.Idle;
-    float maxDragDistance = 1f;
     float touchPointDistance = 0.05f;
     float minLineRendererPointSpacing = 0.3f;
 
     public Vector2 GetNextPos(Vector2 currentPos, Vector2 mousePos)
     {
-        if (Vector2.Distance(currentPos, mousePos) > maxDragDistance)
-        {
-            return currentPos;
-        }
-
-        if (isNearTarget(currentPos) || hasOvershotTarget(currentPos))
+        if (IsNearTarget(currentPos))
         {
             pointIndex++;
+            Debug.Log("pointindex++");
             if (pointIndex == points.childCount - 1)
             {
                 Complete();
@@ -36,32 +31,30 @@ public class TracingManager : MonoBehaviour
             }
         }
 
-        var nextPoint = GetNextPoint();
-        var currentPoint = points.GetChild(pointIndex).position;
-
-        var dirToNextPoint = new Vector2(nextPoint.x - currentPoint.x, nextPoint.y - currentPoint.y);
-        var nearestPosOnLine = NearestPointOnLine(currentPoint, dirToNextPoint, mousePos);
-
-        if (Vector2.Distance(nearestPosOnLine, nextPoint) >= Vector2.Distance(currentPos, nextPoint)) {
-            return currentPos;
-        }
-
-        Vector2 pos = Vector2.MoveTowards(currentPos, nearestPosOnLine, speed * Time.deltaTime);
+        var pos = CalculatePos(currentPos, mousePos);
         UpdateLineRenderer(pos); // TODO: emit event here
+        Debug.Log("is going forwards");
         return pos;
     }
 
-    bool isNearTarget(Vector2 currentPos)
+    Vector2 CalculatePos(Vector2 currentPos, Vector2 mousePos)
     {
-        return Vector2.Distance(currentPos, GetNextPoint()) < touchPointDistance;
+        var nextPoint = GetNextPoint();
+        var currentPoint = points.GetChild(pointIndex).position;
+        var dirToNextPoint = new Vector2(nextPoint.x - currentPoint.x, nextPoint.y - currentPoint.y);
+        var nearestPosOnLine = NearestPointOnLine(currentPoint, dirToNextPoint, mousePos);
+
+        var clampedPos = new Vector2(
+           Mathf.Clamp(nearestPosOnLine.x, Mathf.Min(currentPoint.x, nextPoint.x), Mathf.Max(currentPoint.x, nextPoint.x)),
+           Mathf.Clamp(nearestPosOnLine.y, Mathf.Min(currentPoint.y, nextPoint.y), Mathf.Max(currentPoint.y, nextPoint.y))
+        );
+
+        return Vector2.MoveTowards(currentPos, clampedPos, speed * Time.deltaTime);
     }
 
-    bool hasOvershotTarget(Vector2 currentPos)
+    bool IsNearTarget(Vector2 currentPos)
     {
-        var currentPoint = points.GetChild(pointIndex).position;
-        var distanceToNextPoint = Vector2.Distance(currentPoint, GetNextPoint());
-        var currentDistance = Vector2.Distance(currentPoint, currentPos);
-        return currentDistance > distanceToNextPoint;
+        return Vector2.Distance(currentPos, GetNextPoint()) < touchPointDistance;
     }
 
     // TODO: move this to another class

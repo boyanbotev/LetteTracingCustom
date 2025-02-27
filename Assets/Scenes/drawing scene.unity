@@ -890,7 +890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   points: {fileID: 543773816}
   lineRenderer: {fileID: 1450021187}
-  speed: 7
+  speed: 10
   node: {fileID: 1079094490}
 --- !u!1 &1079094488
 GameObject:
