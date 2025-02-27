@@ -23,7 +23,6 @@ public class TracingManager : MonoBehaviour
         if (IsNearTarget(currentPos))
         {
             pointIndex++;
-            Debug.Log("pointindex++");
             if (pointIndex == points.childCount - 1)
             {
                 Complete();
@@ -33,7 +32,6 @@ public class TracingManager : MonoBehaviour
 
         var pos = CalculatePos(currentPos, mousePos);
         UpdateLineRenderer(pos); // TODO: emit event here
-        Debug.Log("is going forwards");
         return pos;
     }
 
