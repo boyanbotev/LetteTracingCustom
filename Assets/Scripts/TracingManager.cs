@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using UnityEngine;
 
 enum TracingState
@@ -10,13 +9,17 @@ enum TracingState
 public class TracingManager : MonoBehaviour
 {
     [SerializeField] Transform points;
-    [SerializeField] LineRenderer lineRenderer;
     [SerializeField] float speed = 1f;
     [SerializeField] DraggableNode node;
     int pointIndex = 0;
     TracingState state = TracingState.Idle;
     float touchPointDistance = 0.05f;
-    float minLineRendererPointSpacing = 0.3f;
+    LineManager lineManager;
+
+    void Awake()
+    {
+        lineManager = FindFirstObjectByType<LineManager>();
+    }
 
     public Vector2 GetNextPos(Vector2 currentPos, Vector2 mousePos)
     {
@@ -31,7 +34,7 @@ public class TracingManager : MonoBehaviour
         }
 
         var pos = CalculatePos(currentPos, mousePos);
-        UpdateLineRenderer(pos); // TODO: emit event here
+        lineManager.UpdateLines(pos);
         return pos;
     }
 
@@ -53,18 +56,6 @@ public class TracingManager : MonoBehaviour
     bool IsNearTarget(Vector2 currentPos)
     {
         return Vector2.Distance(currentPos, GetNextPoint()) < touchPointDistance;
-    }
-
-    // TODO: move this to another class
-    void UpdateLineRenderer(Vector2 pos)
-    {
-        if (lineRenderer.positionCount > 0 && Vector2.Distance(lineRenderer.GetPosition(lineRenderer.positionCount - 1), pos) < minLineRendererPointSpacing)
-        {
-            return;
-        }
-
-        lineRenderer.positionCount++;
-        lineRenderer.SetPosition(lineRenderer.positionCount - 1, pos);
     }
 
     void Complete()
