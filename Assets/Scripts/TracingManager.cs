@@ -1,24 +1,35 @@
+using System.Collections;
 using UnityEngine;
+using System;
 
 enum TracingState
 {
     Idle,
+    InitialTrace,
     Tracing,
     Completed
 }
 public class TracingManager : MonoBehaviour
 {
+    public static event Action OnComplete;
     [SerializeField] Transform points;
     [SerializeField] float speed = 1f;
+    [SerializeField] float initialTraceSpeed = 1f;
     [SerializeField] DraggableNode node;
     int pointIndex = 0;
-    TracingState state = TracingState.Idle;
-    float touchPointDistance = 0.05f;
+    TracingState state = TracingState.InitialTrace;
+    float touchPointDistance = 0.01f;
     LineManager lineManager;
 
     void Awake()
     {
         lineManager = FindFirstObjectByType<LineManager>();
+        node.gameObject.SetActive(false);
+    }
+
+    void Start()
+    {
+        StartCoroutine(InitialTraceRoutine());
     }
 
     public Vector2 GetNextPos(Vector2 currentPos, Vector2 mousePos)
@@ -60,9 +71,22 @@ public class TracingManager : MonoBehaviour
 
     void Complete()
     {
+        if (state == TracingState.InitialTrace)
+        {
+            return;
+        }
+
         state = TracingState.Completed;
         Debug.Log("Completed");
         node.Complete();
+        OnComplete?.Invoke();
+    }
+
+    private void Reset()
+    {
+        pointIndex = 0;
+        lineManager.Reset();
+        state = TracingState.Idle;
     }
 
     private Vector2 GetNextPoint()
@@ -76,5 +100,23 @@ public class TracingManager : MonoBehaviour
         var v = point - linePnt;
         var d = Vector2.Dot(v, lineDir);
         return linePnt + lineDir * d;
+    }
+
+    IEnumerator InitialTraceRoutine()
+    {
+        var pos = points.GetChild(pointIndex).position;
+
+        while (pointIndex < points.childCount - 1)
+        {
+            var nextPoint = GetNextPoint();
+            var dir = new Vector2(nextPoint.x - pos.x, nextPoint.y - pos.y);
+            var nextPos = new Vector2(pos.x + dir.x, pos.y + dir.y);
+            pos = GetNextPos(pos, nextPos);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        Reset();
+        node.gameObject.SetActive(true);
     }
 }

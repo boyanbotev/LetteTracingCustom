@@ -14,6 +14,7 @@ public class DraggableNode : MonoBehaviour
     public void Complete()
     {
         state = NodeState.Completed;
+        gameObject.SetActive(false);
     }
 
     private void Start()

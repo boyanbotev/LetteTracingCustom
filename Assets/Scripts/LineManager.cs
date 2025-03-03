@@ -25,6 +25,15 @@ public class LineManager : MonoBehaviour
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, pos);
     }
 
+    public void Reset()
+    {
+        foreach (var lineRenderer in lineRenderers)
+        {
+            lineRenderer.positionCount = 0;
+        }
+        lineRendererIndex = 0;
+    }
+
     bool IsAngleTooAcute(Vector2 pos)
     {
         var lineRenderer = lineRenderers[lineRendererIndex];
